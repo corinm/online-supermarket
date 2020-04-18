@@ -1,50 +1,56 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"backend/database"
-	"backend/models"
 
-	"github.com/gorilla/mux"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
 func main() {
-	r := mux.NewRouter()
-	r.Use(mux.CORSMethodMiddleware(r))
-	r.HandleFunc("/products", getProducts).Methods("GET")
-	r.HandleFunc("/products/{id}", getProduct).Methods("GET")
-	fmt.Println("Starting backend on :8000")
-	http.ListenAndServe(":8000", r)
+	e := echo.New()
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+	e.Use(middleware.CORS())
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hello, World!")
+	})
+	e.GET("/products", getProducts)
+	e.POST("/baskets", createBasket)
+	e.POST("/baskets/:id/add", addProductToBasket)
+	e.Logger.Fatal(e.Start(":8000"))
 }
 
-func getProducts(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json")
+func getProducts(c echo.Context) error {
+	products := database.GetProducts()
 	fmt.Println("Returning all products")
-	products := database.ProductData()
-	json.NewEncoder(w).Encode(products)
+	return c.JSON(http.StatusOK, products)
 }
 
-func getProduct(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json")
-	vars := mux.Vars(r)
-	id := vars["id"]
-	fmt.Println("Returning product ", id)
+func createBasket(c echo.Context) error {
+	fmt.Println("Creating basket")
+	basket := database.CreateBasket()
+	return c.JSON(http.StatusOK, basket)
+}
 
-	products := database.ProductData()
-	var product models.Product
-	for _, value := range products {
-		if strconv.Itoa(value.Id) == id {
-			fmt.Println(value)
-			product = value
-			break
-		}
-	}
+func addProductToBasket(c echo.Context) error {
+	fmt.Println("Adding product to basket")
 
-	json.NewEncoder(w).Encode(product)
+	// productId := c.Request()
+	// fmt.Println(productId)
+
+	// TODO: Find product and add it to the basket - using a pointer?
+	// products := database.GetProducts()
+
+	// var productToAdd models.Product
+	// for i, product := range products {
+	// if product.ID == id {
+	// productToAdd = id
+	// }
+	// }
+
+	return c.JSON(http.StatusOK, ":(")
 }

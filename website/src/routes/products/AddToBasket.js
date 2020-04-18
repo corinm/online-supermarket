@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { InputNumber, Button } from "antd";
 
-// import { useAddProductToBasket } from "../../services";
+import { addProductToBasket } from "../../services";
 
-const AddToBasket = ({ id }) => {
+const AddToBasket = ({ id, basketId }) => {
   const [quantity, setQuantity] = useState(1);
 
-  const onAddClick = () => {
-    // useAddProductToBasket(basketId, id, quantity);
-  };
+  const onAddClick = () => addProductToBasket(basketId, id, quantity);
 
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>

@@ -28,10 +28,9 @@ export const createBasket = async () => {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({}),
   });
-  const data = res.json();
-  return data;
+  const data = await res.json();
+  return data.id;
 };
 
 export const useCreateBasket = () => {
