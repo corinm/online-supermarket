@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 )
 
-func Product_data() []models.Product {
+func ProductData() []models.Product {
 	// read file
 	data, err := ioutil.ReadFile("./database/products.json")
 	if err != nil {
