@@ -1,18 +1,13 @@
-import React from 'react'
-import { Layout } from 'antd'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom"
-import './App.css'
-import Home from './routes/home/Home'
-import About from './routes/about/About'
-import Products from './routes/products/Products'
-import Product from './routes/products_id/Product'
-import Header from './components/Header'
+import React from "react";
+import { Layout } from "antd";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import "./App.css";
+import Home from "./routes/home/Home";
+import About from "./routes/about/About";
+import Products from "./routes/products/Products";
+import Header from "./components/Header";
 
-const { Footer } = Layout
+const { Footer } = Layout;
 
 const App = () => {
   return (
@@ -28,13 +23,10 @@ const App = () => {
         <Route exact path="/products">
           <Products />
         </Route>
-        <Route path="/products/:id">
-          <Product />
-        </Route>
       </Switch>
       <Footer></Footer>
     </Router>
-  )
-}
+  );
+};
 
 export default App;

@@ -1,20 +1,7 @@
-import React, { useState } from "react";
-import { Card, Statistic, InputNumber, Button } from "antd";
+import React from "react";
+import { Card, Statistic } from "antd";
 
-const AddToBasket = ({ id }) => {
-  const [quantity, setQuantity] = useState(1);
-
-  const onAddClick = () => console.log(id, quantity);
-
-  return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <InputNumber value={quantity} onChange={setQuantity} />
-      <Button type="primary" onClick={onAddClick}>
-        Add
-      </Button>
-    </div>
-  );
-};
+import AddToBasket from "./AddToBasket";
 
 const Product = ({ id, name, price, description, image, rating }) => {
   return (

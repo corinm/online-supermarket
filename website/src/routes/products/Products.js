@@ -2,10 +2,10 @@ import React from "react";
 import Product from "./Product";
 import { Col, Row } from "antd";
 
-import { useLoadProducts } from "../../services";
+import { useFetchProducts } from "../../services";
 
 const Products = () => {
-  const products = useLoadProducts();
+  const products = useFetchProducts();
 
   return (
     <div className="Products">
