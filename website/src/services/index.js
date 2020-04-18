@@ -20,3 +20,50 @@ export const useFetchProducts = () => {
 
   return products;
 };
+
+export const createBasket = async () => {
+  const res = await fetch(`http://localhost:8000/baskets`, {
+    method: "post",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({}),
+  });
+  const data = res.json();
+  return data;
+};
+
+export const useCreateBasket = () => {
+  const [basketId, setBasketId] = useState();
+
+  useEffect(() => {
+    const fetchBasketId = async () => {
+      const basketId = await createBasket();
+      setBasketId(basketId);
+    };
+
+    fetchBasketId();
+  }, []);
+
+  return basketId;
+};
+
+export const addProductToBasket = async (basketId, productId, quantity) => {
+  const res = await fetch(`http://localhost:8000/baskets/${basketId}/add`, {
+    method: "post",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ productId, quantity }),
+  });
+  const data = res.json();
+  return data;
+};
+
+export const useAddProductToBasket = (basketId, productId, quantity) => {
+  useEffect(() => {
+    addProductToBasket(basketId, productId, quantity);
+  }, [basketId, productId, quantity]);
+};
