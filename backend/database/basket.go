@@ -16,7 +16,33 @@ func CreateBasket() models.Basket {
 	return basket
 }
 
+// GetBaskets returns a slice of pointers to baskets
+func GetBaskets() []*models.Basket {
+	return baskets
+}
+
+// GetBasketByID returns a basket from the database given its id
+func GetBasketByID(id int) *models.Basket {
+	var basket *models.Basket
+
+	for _, candidate := range baskets {
+		if candidate.ID == id {
+			basket = candidate
+		}
+	}
+
+	return basket
+}
+
 // AddProductToBasket adds a product to a basket
 func AddProductToBasket(basketID int, product *models.Product) {
+	var basket *models.Basket
 
+	for _, candidate := range baskets {
+		if candidate.ID == basketID {
+			basket = candidate
+		}
+	}
+
+	basket.Products = append(basket.Products, product)
 }
