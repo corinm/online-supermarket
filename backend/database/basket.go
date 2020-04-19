@@ -15,3 +15,8 @@ func CreateBasket() models.Basket {
 	baskets = append(baskets, &basket)
 	return basket
 }
+
+// AddProductToBasket adds a product to a basket
+func AddProductToBasket(basketID int, product *models.Product) {
+
+}

@@ -55,7 +55,7 @@ export const addProductToBasket = async (basketId, productId, quantity) => {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ productId, quantity }),
+    body: JSON.stringify({ id: productId, quantity }),
   });
   const data = res.json();
   return data;
