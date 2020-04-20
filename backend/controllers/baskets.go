@@ -49,6 +49,8 @@ func extractProductID(c echo.Context) int {
 	return product.ID
 }
 
+// AddProductToBasket accepts a basketID via url param "id" and productID via body.id
+// and adds a pointer to that product to the basket
 func AddProductToBasket(c echo.Context) error {
 	fmt.Println("Adding product to basket")
 
