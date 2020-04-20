@@ -66,3 +66,24 @@ export const useAddProductToBasket = (basketId, productId, quantity) => {
     addProductToBasket(basketId, productId, quantity);
   }, [basketId, productId, quantity]);
 };
+
+const fetchBasketById = async (id) => {
+  const res = await fetch(`http://localhost:8000/baskets/${id}`);
+  const data = res.json();
+  return { ...data, products: data.products || [] };
+};
+
+export const useFetchBasketById = (id) => {
+  const [basket, setBasket] = useState();
+
+  useEffect(() => {
+    const loadBasket = async () => {
+      const basket = await fetchBasketById(id);
+      setBasket(basket);
+    };
+
+    loadBasket();
+  }, [id]);
+
+  return basket;
+};
