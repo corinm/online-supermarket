@@ -17,12 +17,19 @@ export const useGetBasketId = () => {
 
   useEffect(() => {
     const fetchBasketId = async () => {
-      const basketId = await createBasket();
-      setBasketId(basketId);
+      const basketIdFromServer = await createBasket();
+      setBasketId(basketIdFromServer);
+      sessionStorage.setItem("basketId", basketIdFromServer);
     };
 
     if (!basketId) {
-      fetchBasketId();
+      const basketIdFromStorage = sessionStorage.getItem("basketId");
+
+      if (basketIdFromStorage) {
+        setBasketId(basketIdFromStorage);
+      } else {
+        fetchBasketId();
+      }
     }
   }, [basketId]);
 
