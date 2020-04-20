@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import Product from "./Product";
 import { Col, Row } from "antd";
 
-import { useFetchProducts, useCreateBasket } from "../../services";
+import { useFetchProducts } from "../../services/products";
+import BasketIdContext from "../../context/basket";
 
 const Products = () => {
   const products = useFetchProducts();
-  const basketId = useCreateBasket();
-  console.log({ basketId });
+  const basketId = useContext(BasketIdContext);
 
   return (
     <div className="Products">

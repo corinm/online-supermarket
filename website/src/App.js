@@ -8,29 +8,35 @@ import Home from "./routes/home/Home";
 import About from "./routes/about/About";
 import Products from "./routes/products/Products";
 import Basket from "./routes/basket/Basket";
+import BasketIdContext from "./context/basket";
+import { useGetBasketId } from "./services/basket";
 
 const { Footer } = Layout;
 
 const App = () => {
+  const basketId = useGetBasketId();
+
   return (
-    <Router>
-      <Header />
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/about">
-          <About />
-        </Route>
-        <Route exact path="/products">
-          <Products />
-        </Route>
-        <Route exact path="/basket">
-          <Basket />
-        </Route>
-      </Switch>
-      <Footer></Footer>
-    </Router>
+    <BasketIdContext.Provider value={basketId}>
+      <Router>
+        <Header />
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route exact path="/products">
+            <Products />
+          </Route>
+          <Route exact path="/basket">
+            <Basket />
+          </Route>
+        </Switch>
+        <Footer></Footer>
+      </Router>
+    </BasketIdContext.Provider>
   );
 };
 

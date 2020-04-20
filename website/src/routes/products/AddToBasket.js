@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { InputNumber, Button } from "antd";
 
-import { addProductToBasket } from "../../services";
+import { addProductToBasket } from "../../services/basket";
 
 const AddToBasket = ({ id, basketId }) => {
   const [quantity, setQuantity] = useState(1);

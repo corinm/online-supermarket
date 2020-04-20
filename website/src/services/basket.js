@@ -1,26 +1,5 @@
 import { useState, useEffect } from "react";
 
-const fetchProducts = async () => {
-  const res = await fetch("http://localhost:8000/products");
-  const data = res.json();
-  return data;
-};
-
-export const useFetchProducts = () => {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const loadProducts = async () => {
-      const products = await fetchProducts();
-      setProducts(products);
-    };
-
-    loadProducts();
-  }, []);
-
-  return products;
-};
-
 export const createBasket = async () => {
   const res = await fetch(`http://localhost:8000/baskets`, {
     method: "post",
@@ -33,7 +12,7 @@ export const createBasket = async () => {
   return data.id;
 };
 
-export const useCreateBasket = () => {
+export const useGetBasketId = () => {
   const [basketId, setBasketId] = useState();
 
   useEffect(() => {
@@ -42,8 +21,10 @@ export const useCreateBasket = () => {
       setBasketId(basketId);
     };
 
-    fetchBasketId();
-  }, []);
+    if (!basketId) {
+      fetchBasketId();
+    }
+  }, [basketId]);
 
   return basketId;
 };
@@ -70,7 +51,7 @@ export const useAddProductToBasket = (basketId, productId, quantity) => {
 const fetchBasketById = async (id) => {
   const res = await fetch(`http://localhost:8000/baskets/${id}`);
   const data = res.json();
-  return { ...data, products: data.products || [] };
+  return data;
 };
 
 export const useFetchBasketById = (id) => {
@@ -78,8 +59,8 @@ export const useFetchBasketById = (id) => {
 
   useEffect(() => {
     const loadBasket = async () => {
-      const basket = await fetchBasketById(id);
-      setBasket(basket);
+      const newBasket = await fetchBasketById(id);
+      setBasket(newBasket);
     };
 
     loadBasket();

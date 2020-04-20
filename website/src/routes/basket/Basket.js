@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 
-import { useFetchBasketById } from "../../services";
+import { useFetchBasketById } from "../../services/basket";
+import BasketIdContext from "../../context/basket";
 
 const Basket = () => {
-  const basketId = 1;
+  const basketId = useContext(BasketIdContext);
   const basket = useFetchBasketById(basketId);
 
   if (!basket) {
     return <div>Loading</div>;
   }
 
-  const isProductsInBasket = basket.products.length > 0;
+  const isProductsInBasket = basket.products && basket.products.length > 0;
 
   return (
     <div>
