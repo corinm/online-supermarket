@@ -17,13 +17,19 @@ This is a fake online supermarket website. It is being created as a learning exe
 
 ## Features
 
+### Functional
+
 - Products page with hardcoded list of products ✅
 - Basket stored in backend ✅
 - Can add single products to the basket ✅
-- Basket page where a user can view their basket - TODO
-- Can add more than of a product to the basket - TODO
-- Can remove items from basket - TODO
-- Users can check out and order their items using fake payment page - TODO
-- Users can apply a discount code - TODO
-- Products can have multibuy discounts - TODO
-- Products and basket stored in database - TODO
+
+### To do
+
+- Can add more than one of a product to the basket
+- Display number of items in basket in menu bar
+- Basket page where a user can view their basket
+- Can remove items from basket
+- Users can check out and order their items using fake payment page
+- Users can apply a discount code
+- Products can have multibuy discounts
+- Products and basket stored in database
