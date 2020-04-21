@@ -18,53 +18,25 @@ func CreateBasket() models.Basket {
 	return basket
 }
 
-// GetBaskets returns a slice of pointers to baskets
+// GetBaskets returns all stored baskets
 func GetBaskets() []*models.Basket {
 	return baskets
 }
 
-// GetBasketByID returns a basket from the database given its id
+// GetBasketByID returns a specific basket based on its ID
 func GetBasketByID(id int) *models.Basket {
-	var basket *models.Basket
-
-	for _, candidate := range baskets {
-		if candidate.ID == id {
-			basket = candidate
-		}
-	}
-
+	basket := getBasket(baskets, id)
 	return basket
 }
 
-func isProductInBasket(basket *models.Basket, productID int) bool {
-	for _, product := range basket.Products {
-		if product.ID == productID {
-			return true
-		}
-	}
-	return false
-}
-
-// AddProductToBasket adds a product to a basket
+// AddProductToBasket adds a product to a basket if no already present
+// otherwise it increments the quantity
 func AddProductToBasket(basketID int, product *models.Product) {
-	var basket *models.Basket
-
-	for _, candidate := range baskets {
-		if candidate.ID == basketID {
-			basket = candidate
-		}
-	}
+	basket := getBasket(baskets, basketID)
 
 	if isProductInBasket(basket, product.ID) {
-		for _, existingProduct := range basket.Products {
-			if existingProduct.ID == product.ID {
-				existingProduct.Quantity++
-				break
-			}
-		}
+		incrementQuantityInBasket(basket, product.ID)
 	} else {
-		product.Quantity = 1
-		basket.Products = append(basket.Products, product)
+		addOneToBasket(basket, product)
 	}
-
 }

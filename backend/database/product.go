@@ -7,9 +7,8 @@ import (
 	"io/ioutil"
 )
 
-// GetProducts returns a list of all products
+// GetProducts returns a list of all stored products
 func GetProducts() []models.Product {
-	// read file
 	data, err := ioutil.ReadFile("./database/products.json")
 	if err != nil {
 		fmt.Print(err)
