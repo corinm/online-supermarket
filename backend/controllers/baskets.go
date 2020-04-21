@@ -69,8 +69,6 @@ func AddProductToBasket(c echo.Context) error {
 		}
 	}
 
-	productToAdd.Quantity = 1
-
 	database.AddProductToBasket(basketID, &productToAdd)
 
 	return c.JSON(http.StatusOK, basketID)
