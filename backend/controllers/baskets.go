@@ -60,7 +60,6 @@ func AddProductToBasket(c echo.Context) error {
 	productID := extractProductID(c)
 	fmt.Print("ProductID: ", productID)
 
-	// TODO: Find product and add it to the basket - using a pointer?
 	products := database.GetProducts()
 
 	var productToAdd models.Product
@@ -69,6 +68,8 @@ func AddProductToBasket(c echo.Context) error {
 			productToAdd = product
 		}
 	}
+
+	productToAdd.Quantity = 1
 
 	database.AddProductToBasket(basketID, &productToAdd)
 

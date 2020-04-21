@@ -8,4 +8,5 @@ type Product struct {
 	Description string  `json:"description"`
 	Image       string  `json:"image"`
 	Rating      float32 `json:"rating"`
+	Quantity    int     `json:"quantity"` // Has this when in basket
 }
