@@ -5,7 +5,6 @@ import "./App.css";
 
 import Header from "./components/Header";
 import Home from "./routes/home/Home";
-import About from "./routes/about/About";
 import Products from "./routes/products/Products";
 import Basket from "./routes/basket/Basket";
 import BasketIdContext from "./context/basket";
@@ -23,9 +22,6 @@ const App = () => {
         <Switch>
           <Route exact path="/">
             <Home />
-          </Route>
-          <Route path="/about">
-            <About />
           </Route>
           <Route exact path="/products">
             <Products />

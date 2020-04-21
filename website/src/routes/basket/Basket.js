@@ -19,8 +19,10 @@ const Basket = () => {
       <div>
         {isProductsInBasket ? (
           <div>
-            {basket.products.map((product) => (
-              <div>{product.name}</div>
+            {basket.products.map((product, i) => (
+              <div key={i}>
+                <div>{product.name}</div>
+              </div>
             ))}
           </div>
         ) : (

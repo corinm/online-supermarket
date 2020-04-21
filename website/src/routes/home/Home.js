@@ -22,7 +22,7 @@ const Home = () => {
         </Center>
         <Center>
           <div>
-            Click <Link>here</Link> to start shopping
+            Click <Link to="/products">here</Link> to start shopping
           </div>
         </Center>
       </PaddedSection>

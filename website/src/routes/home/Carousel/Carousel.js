@@ -47,8 +47,8 @@ const Image = ({ src, alt, attribution }) => (
 
 const Carousel = () => (
   <AntCarousel autoplay>
-    {images.map((image) => (
-      <Image {...image} />
+    {images.map((image, i) => (
+      <Image key={i} {...image} />
     ))}
   </AntCarousel>
 );

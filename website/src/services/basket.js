@@ -70,7 +70,9 @@ export const useFetchBasketById = (id) => {
       setBasket(newBasket);
     };
 
-    loadBasket();
+    if (id) {
+      loadBasket();
+    }
   }, [id]);
 
   return basket;
