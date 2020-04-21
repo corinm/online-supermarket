@@ -1,42 +1,34 @@
-import React from 'react'
-import { Carousel, Layout } from 'antd'
-import eggs from './eggs.jpeg'
-import dinosaurs from './dinosaurs.jpeg'
+import React from "react";
+import { Link } from "react-router-dom";
+import { Layout, Typography } from "antd";
 
-const { Content } = Layout
+import Carousel from "./Carousel/Carousel";
+import { generateGreeting } from "./helpers";
 
-const getGreeting = () => {
-  const d = new Date()
-  const hours = d.getHours()
-  if (hours > 12 && hours < 18) {
-    return 'Good Afternoon'
-  } else if (hours > 18) {
-    return 'Good Evening'
-  } else {
-    return 'Good Morning'
-  }
-}
+const PaddedSection = ({ children }) => (
+  <div style={{ paddingTop: 30, paddingBottom: 30 }}>{children}</div>
+);
+
+const Center = ({ children }) => (
+  <div style={{ display: "flex", justifyContent: "center" }}>{children}</div>
+);
 
 const Home = () => {
   return (
-    <Content>
-      <div className="Home">
-        <h2>{getGreeting()}</h2>
-        <Carousel autoplay style={{
-          minWidth: "100%",
-          height: 176,
-          overflow: "hidden"
-        }}>
+    <Layout.Content>
+      <PaddedSection>
+        <Center>
+          <Typography.Title level={2}>{generateGreeting()}</Typography.Title>
+        </Center>
+        <Center>
           <div>
-            <img src={eggs} alt="eggs"></img>
+            Click <Link>here</Link> to start shopping
           </div>
-          <div>
-            <img src={dinosaurs} alt="dinosaurs"></img>
-          </div>
-        </Carousel>
-      </div>
-    </Content>
+        </Center>
+      </PaddedSection>
+      <Carousel></Carousel>
+    </Layout.Content>
   );
-}
+};
 
-export default Home
+export default Home;

@@ -1,7 +1,7 @@
-import React from 'react'
-import { Layout } from 'antd'
+import React from "react";
+import { Layout } from "antd";
 
-const { Content } = Layout
+const { Content } = Layout;
 
 const About = () => {
   return (
@@ -11,6 +11,6 @@ const About = () => {
       </div>
     </Content>
   );
-}
+};
 
-export default About
+export default About;
