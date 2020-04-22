@@ -1,11 +1,17 @@
 import React, { useContext } from "react";
 
-import { useFetchBasketById } from "../../services/basket";
-import BasketIdContext from "../../context/basket";
+import BasketContext from "../../context/basket";
+
+const BasketItem = ({ id, name, quantity, onRemove }) => (
+  <div style={{ display: "flex" }}>
+    <div>{name}</div>
+    <div>{quantity}</div>
+    <div onClick={() => onRemove(id)}>Remove</div>
+  </div>
+);
 
 const Basket = () => {
-  const basketId = useContext(BasketIdContext);
-  const basket = useFetchBasketById(basketId);
+  const { basket, removeProductFromBasket } = useContext(BasketContext);
 
   if (!basket) {
     return <div>Loading</div>;
@@ -20,10 +26,11 @@ const Basket = () => {
         {isProductsInBasket ? (
           <div>
             {basket.products.map((product, i) => (
-              <div key={i} style={{ display: "flex" }}>
-                <div>{product.name}</div>
-                <div>{product.quantity}</div>
-              </div>
+              <BasketItem
+                key={i}
+                {...product}
+                onRemove={removeProductFromBasket}
+              />
             ))}
           </div>
         ) : (

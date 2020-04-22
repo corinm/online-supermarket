@@ -1,6 +1,8 @@
 package database
 
-import "backend/models"
+import (
+	"backend/models"
+)
 
 func getBasket(baskets []*models.Basket, basketID int) *models.Basket {
 	var basket *models.Basket
@@ -35,4 +37,13 @@ func incrementQuantityInBasket(basket *models.Basket, productID int) {
 func addOneToBasket(basket *models.Basket, product *models.Product) {
 	product.Quantity = 1
 	basket.Products = append(basket.Products, product)
+}
+
+func removeFromBasket(basket *models.Basket, productID int) *models.Basket {
+	for i, candidate := range basket.Products {
+		if candidate.ID == productID {
+			basket.Products = append(basket.Products[:i], basket.Products[i+1:]...)
+		}
+	}
+	return basket
 }

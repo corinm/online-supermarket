@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { InputNumber, Button } from "antd";
 
-import { addProductToBasket } from "../../services/basket";
+import BasketContext from "../../context/basket";
 
-const AddToBasket = ({ id, basketId }) => {
+const AddToBasket = ({ id }) => {
   const [quantity, setQuantity] = useState(1);
-
-  const onAddClick = () => addProductToBasket(basketId, id, quantity);
+  const { addProductToBasket } = useContext(BasketContext);
 
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
       <InputNumber value={quantity} onChange={setQuantity} />
-      <Button type="primary" onClick={onAddClick}>
+      <Button type="primary" onClick={() => addProductToBasket(id, quantity)}>
         Add
       </Button>
     </div>

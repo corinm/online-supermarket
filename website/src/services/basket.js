@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export const createBasket = async () => {
+const createBasket = async () => {
   const res = await fetch(`http://localhost:8000/baskets`, {
     method: "post",
     headers: {
@@ -9,34 +9,10 @@ export const createBasket = async () => {
     },
   });
   const data = await res.json();
-  return data.id;
+  return data;
 };
 
-export const useGetBasketId = () => {
-  const [basketId, setBasketId] = useState();
-
-  useEffect(() => {
-    const fetchBasketId = async () => {
-      const basketIdFromServer = await createBasket();
-      setBasketId(basketIdFromServer);
-      sessionStorage.setItem("basketId", basketIdFromServer);
-    };
-
-    if (!basketId) {
-      const basketIdFromStorage = sessionStorage.getItem("basketId");
-
-      if (basketIdFromStorage) {
-        setBasketId(basketIdFromStorage);
-      } else {
-        fetchBasketId();
-      }
-    }
-  }, [basketId]);
-
-  return basketId;
-};
-
-export const addProductToBasket = async (basketId, productId, quantity) => {
+const addProductToBasket = async (basketId, productId, quantity) => {
   const res = await fetch(`http://localhost:8000/baskets/${basketId}/add`, {
     method: "post",
     headers: {
@@ -49,31 +25,49 @@ export const addProductToBasket = async (basketId, productId, quantity) => {
   return data;
 };
 
-export const useAddProductToBasket = (basketId, productId, quantity) => {
-  useEffect(() => {
-    addProductToBasket(basketId, productId, quantity);
-  }, [basketId, productId, quantity]);
-};
-
-const fetchBasketById = async (id) => {
-  const res = await fetch(`http://localhost:8000/baskets/${id}`);
+const removeProductFromBasket = async (basketId, productId) => {
+  const res = await fetch(`http://localhost:8000/baskets/${basketId}/remove`, {
+    method: "post",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id: productId }),
+  });
   const data = res.json();
   return data;
 };
 
-export const useFetchBasketById = (id) => {
+export const useBasket = () => {
   const [basket, setBasket] = useState();
+  const [creating, setCreating] = useState(false);
+
+  const addProductToBasketLocal = async (productId, quantity) => {
+    const newBasket = await addProductToBasket(basket.id, productId, quantity);
+    setBasket(newBasket);
+  };
+
+  const removeProductFromBasketLocal = async (productId) => {
+    const newBasket = await removeProductFromBasket(basket.id, productId);
+    setBasket(newBasket);
+  };
 
   useEffect(() => {
-    const loadBasket = async () => {
-      const newBasket = await fetchBasketById(id);
+    const createBasketLocal = async () => {
+      const newBasket = await createBasket();
       setBasket(newBasket);
+      setCreating(false);
     };
 
-    if (id) {
-      loadBasket();
+    if (!basket & !creating) {
+      setCreating(true);
+      createBasketLocal();
     }
-  }, [id]);
+  }, [basket, creating]);
 
-  return basket;
+  return {
+    basket,
+    addProductToBasket: addProductToBasketLocal,
+    removeProductFromBasket: removeProductFromBasketLocal,
+  };
 };

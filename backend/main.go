@@ -21,6 +21,7 @@ func main() {
 	e.GET("/baskets/:id", controllers.GetBasketByID)
 	e.POST("/baskets", controllers.CreateBasket)
 	e.POST("/baskets/:id/add", controllers.AddProductToBasket)
+	e.POST("/baskets/:id/remove", controllers.RemoveProductFromBasket)
 
 	e.Logger.Fatal(e.Start(":8000"))
 }

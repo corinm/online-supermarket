@@ -1,5 +1,5 @@
 import React from "react";
 
-const BasketIdContext = React.createContext();
+const BasketContext = React.createContext();
 
-export default BasketIdContext;
+export default BasketContext;

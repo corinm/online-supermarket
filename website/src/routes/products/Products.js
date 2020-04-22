@@ -3,11 +3,11 @@ import Product from "./Product";
 import { Col, Row } from "antd";
 
 import { useFetchProducts } from "../../services/products";
-import BasketIdContext from "../../context/basket";
+import BasketContext from "../../context/basket";
 
 const Products = () => {
   const products = useFetchProducts();
-  const basketId = useContext(BasketIdContext);
+  const basketId = useContext(BasketContext);
 
   return (
     <div className="Products">

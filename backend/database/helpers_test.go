@@ -80,3 +80,15 @@ func TestAddOneToBasketAddsOneOfProduct(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestRemoveFromBasket(t *testing.T) {
+	mockBasket := models.Basket{ID: 1}
+	mockProduct := models.Product{ID: 1}
+	mockBasket.Products = append(mockBasket.Products, &mockProduct)
+
+	removeFromBasket(&mockBasket, 1)
+
+	if len(mockBasket.Products) != 0 {
+		t.Fail()
+	}
+}

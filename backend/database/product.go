@@ -23,3 +23,16 @@ func GetProducts() []models.Product {
 
 	return products
 }
+
+// GetProductByID return a product given its ID
+func GetProductByID(id int) *models.Product {
+	products := GetProducts()
+
+	for _, product := range products {
+		if product.ID == id {
+			return &product
+		}
+	}
+
+	return nil
+}

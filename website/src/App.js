@@ -7,16 +7,18 @@ import Header from "./components/Header";
 import Home from "./routes/home/Home";
 import Products from "./routes/products/Products";
 import Basket from "./routes/basket/Basket";
-import BasketIdContext from "./context/basket";
-import { useGetBasketId } from "./services/basket";
+import BasketContext from "./context/basket";
+import { useBasket } from "./services/basket";
 
 const { Footer } = Layout;
 
 const App = () => {
-  const basketId = useGetBasketId();
+  const { basket, addProductToBasket, removeProductFromBasket } = useBasket();
 
   return (
-    <BasketIdContext.Provider value={basketId}>
+    <BasketContext.Provider
+      value={{ basket, addProductToBasket, removeProductFromBasket }}
+    >
       <Router>
         <Header />
         <Switch>
@@ -32,7 +34,7 @@ const App = () => {
         </Switch>
         <Footer></Footer>
       </Router>
-    </BasketIdContext.Provider>
+    </BasketContext.Provider>
   );
 };
 

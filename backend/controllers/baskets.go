@@ -18,8 +18,18 @@ func GetBaskets(c echo.Context) error {
 
 // GetBasketByID returns a basket given an id
 func GetBasketByID(c echo.Context) error {
-	id := extractBasketID(c)
+	id, err := extractBasketID(c)
+
+	if err != nil {
+		return err
+	}
+
 	basket := database.GetBasketByID(id)
+
+	if basket == nil {
+		return c.JSON(http.StatusNotFound, fmt.Sprintf("Basket with id %v not found", id))
+	}
+
 	return c.JSON(http.StatusOK, basket)
 }
 
@@ -30,23 +40,26 @@ func CreateBasket(c echo.Context) error {
 	return c.JSON(http.StatusOK, basket)
 }
 
-func extractBasketID(c echo.Context) int {
+func extractBasketID(c echo.Context) (int, error) {
 	rawID := c.Param("id")
-	basketID, err := strconv.Atoi(rawID)
-	if err != nil {
-		fmt.Println(err)
+
+	if rawID == "" {
+		return 0, c.JSON(http.StatusBadRequest, "basketId required")
 	}
-	return basketID
+
+	basketID, err := strconv.Atoi(rawID)
+
+	if err != nil {
+		return 0, c.JSON(http.StatusInternalServerError, err)
+	}
+
+	return basketID, nil
 }
 
-func extractProductID(c echo.Context) int {
+func extractProductID(c echo.Context) (int, error) {
 	product := new(models.Product)
-
-	if err := c.Bind(product); err != nil {
-		fmt.Println(err)
-	}
-
-	return product.ID
+	err := c.Bind(product)
+	return product.ID, err
 }
 
 // AddProductToBasket accepts a basketID via url param "id" and productID via body.id
@@ -54,22 +67,43 @@ func extractProductID(c echo.Context) int {
 func AddProductToBasket(c echo.Context) error {
 	fmt.Println("Adding product to basket")
 
-	basketID := extractBasketID(c)
-	fmt.Println("BasketID: ", basketID)
+	basketID, errBasketID := extractBasketID(c)
+	productID, errProductID := extractProductID(c)
 
-	productID := extractProductID(c)
-	fmt.Print("ProductID: ", productID)
-
-	products := database.GetProducts()
-
-	var productToAdd models.Product
-	for _, product := range products {
-		if product.ID == productID {
-			productToAdd = product
-		}
+	if errBasketID != nil {
+		return errBasketID
+	}
+	if errProductID != nil {
+		return errProductID
 	}
 
-	database.AddProductToBasket(basketID, &productToAdd)
+	productToAdd := database.GetProductByID(productID)
 
-	return c.JSON(http.StatusOK, basketID)
+	if productToAdd == nil {
+		return c.JSON(http.StatusNotFound, "Product not found")
+	}
+
+	updatedBasket := database.AddProductToBasket(basketID, productToAdd)
+
+	return c.JSON(http.StatusOK, updatedBasket)
+}
+
+// RemoveProductFromBasket accepts a basketID via url param "id" and productID via body.id
+// and removes it from the basket
+func RemoveProductFromBasket(c echo.Context) error {
+	fmt.Println("Removing product from basket")
+
+	basketID, errBasketID := extractBasketID(c)
+	productID, errProductID := extractProductID(c)
+
+	if errBasketID != nil {
+		return errBasketID
+	}
+	if errProductID != nil {
+		return errProductID
+	}
+
+	updatedBasket := database.RemoveProductFromBasket(basketID, productID)
+
+	return c.JSON(http.StatusOK, updatedBasket)
 }
