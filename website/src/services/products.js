@@ -6,7 +6,7 @@ const fetchProducts = async () => {
   return data;
 };
 
-export const useFetchProducts = () => {
+export const useProducts = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
