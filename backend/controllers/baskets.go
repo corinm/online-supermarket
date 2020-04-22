@@ -56,10 +56,10 @@ func extractBasketID(c echo.Context) (int, error) {
 	return basketID, nil
 }
 
-func extractProductID(c echo.Context) (int, error) {
+func extractProduct(c echo.Context) (*models.Product, error) {
 	product := new(models.Product)
 	err := c.Bind(product)
-	return product.ID, err
+	return product, err
 }
 
 // AddProductToBasket accepts a basketID via url param "id" and productID via body.id
@@ -68,22 +68,22 @@ func AddProductToBasket(c echo.Context) error {
 	fmt.Println("Adding product to basket")
 
 	basketID, errBasketID := extractBasketID(c)
-	productID, errProductID := extractProductID(c)
+	product, errProduct := extractProduct(c)
 
 	if errBasketID != nil {
 		return errBasketID
 	}
-	if errProductID != nil {
-		return errProductID
+	if errProduct != nil {
+		return errProduct
 	}
 
-	productToAdd := database.GetProductByID(productID)
+	productToAdd := database.GetProductByID(product.ID)
 
 	if productToAdd == nil {
 		return c.JSON(http.StatusNotFound, "Product not found")
 	}
 
-	updatedBasket := database.AddProductToBasket(basketID, productToAdd)
+	updatedBasket := database.AddProductToBasket(basketID, productToAdd, product.Quantity)
 
 	return c.JSON(http.StatusOK, updatedBasket)
 }
@@ -94,16 +94,16 @@ func RemoveProductFromBasket(c echo.Context) error {
 	fmt.Println("Removing product from basket")
 
 	basketID, errBasketID := extractBasketID(c)
-	productID, errProductID := extractProductID(c)
+	product, errProduct := extractProduct(c)
 
 	if errBasketID != nil {
 		return errBasketID
 	}
-	if errProductID != nil {
-		return errProductID
+	if errProduct != nil {
+		return errProduct
 	}
 
-	updatedBasket := database.RemoveProductFromBasket(basketID, productID)
+	updatedBasket := database.RemoveProductFromBasket(basketID, product.ID)
 
 	return c.JSON(http.StatusOK, updatedBasket)
 }

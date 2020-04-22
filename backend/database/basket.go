@@ -31,13 +31,13 @@ func GetBasketByID(id int) *models.Basket {
 
 // AddProductToBasket adds a product to a basket if no already present
 // otherwise it increments the quantity
-func AddProductToBasket(basketID int, product *models.Product) *models.Basket {
+func AddProductToBasket(basketID int, product *models.Product, quantity int) *models.Basket {
 	basket := getBasket(baskets, basketID)
 
 	if isProductInBasket(basket, product.ID) {
-		incrementQuantityInBasket(basket, product.ID)
+		incrementQuantityInBasket(basket, product.ID, quantity)
 	} else {
-		addOneToBasket(basket, product)
+		addToBasket(basket, product, quantity)
 	}
 
 	return basket

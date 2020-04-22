@@ -51,7 +51,7 @@ func TestIsProductInBasketReturnsTrueWhenProductIsInBasket(t *testing.T) {
 	}
 }
 
-func TestIncrementQuantityInBasketIncrements(t *testing.T) {
+func TestIncrementQuantityInBasketIncrementsByOne(t *testing.T) {
 	mockBasket := models.Basket{ID: 1}
 	mockProduct1 := models.Product{ID: 1, Quantity: 1}
 	mockProduct2 := models.Product{ID: 2, Quantity: 1}
@@ -60,23 +60,53 @@ func TestIncrementQuantityInBasketIncrements(t *testing.T) {
 	mockBasket.Products = append(mockBasket.Products, &mockProduct2)
 	mockBasket.Products = append(mockBasket.Products, &mockProduct3)
 
-	incrementQuantityInBasket(&mockBasket, 2)
+	incrementQuantityInBasket(&mockBasket, 2, 1)
 
 	if mockProduct2.Quantity != 2 {
 		t.Fail()
 	}
 }
 
-func TestAddOneToBasketAddsOneOfProduct(t *testing.T) {
+func TestIncrementQuantityInBasketIncrementsByTwo(t *testing.T) {
+	mockBasket := models.Basket{ID: 1}
+	mockProduct1 := models.Product{ID: 1, Quantity: 1}
+	mockProduct2 := models.Product{ID: 2, Quantity: 1}
+	mockProduct3 := models.Product{ID: 3, Quantity: 1}
+	mockBasket.Products = append(mockBasket.Products, &mockProduct1)
+	mockBasket.Products = append(mockBasket.Products, &mockProduct2)
+	mockBasket.Products = append(mockBasket.Products, &mockProduct3)
+
+	incrementQuantityInBasket(&mockBasket, 2, 2)
+
+	if mockProduct2.Quantity != 3 {
+		t.Fail()
+	}
+}
+
+func TestAddToBasketAddsOneOfProduct(t *testing.T) {
 	mockBasket := models.Basket{ID: 1}
 	mockProduct := models.Product{ID: 1}
 
-	addOneToBasket(&mockBasket, &mockProduct)
+	addToBasket(&mockBasket, &mockProduct, 1)
 
 	if len(mockBasket.Products) != 1 {
 		t.Fail()
 	}
 	if mockProduct.Quantity != 1 {
+		t.Fail()
+	}
+}
+
+func TestAddToBasketAddsTwoOfProduct(t *testing.T) {
+	mockBasket := models.Basket{ID: 1}
+	mockProduct := models.Product{ID: 1}
+
+	addToBasket(&mockBasket, &mockProduct, 2)
+
+	if len(mockBasket.Products) != 1 {
+		t.Fail()
+	}
+	if mockProduct.Quantity != 2 {
 		t.Fail()
 	}
 }

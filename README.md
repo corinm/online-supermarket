@@ -22,10 +22,10 @@ This is a fake online supermarket website. It is being created as a learning exe
 - Products page with hardcoded list of products ✅
 - Basket stored in backend ✅
 - Can add single products to the basket ✅
+- Can add more than one of a product to the basket ✅
 
 ### To do
 
-- Can add more than one of a product to the basket
 - Display number of items in basket in menu bar
 - Basket page where a user can view their basket
 - Can remove items from basket

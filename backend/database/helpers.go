@@ -25,17 +25,17 @@ func isProductInBasket(basket *models.Basket, productID int) bool {
 	return false
 }
 
-func incrementQuantityInBasket(basket *models.Basket, productID int) {
+func incrementQuantityInBasket(basket *models.Basket, productID int, quantity int) {
 	for _, existingProduct := range basket.Products {
 		if existingProduct.ID == productID {
-			existingProduct.Quantity++
+			existingProduct.Quantity += quantity
 			break
 		}
 	}
 }
 
-func addOneToBasket(basket *models.Basket, product *models.Product) {
-	product.Quantity = 1
+func addToBasket(basket *models.Basket, product *models.Product, quantity int) {
+	product.Quantity = quantity
 	basket.Products = append(basket.Products, product)
 }
 
