@@ -13,12 +13,10 @@ import { useBasket } from "./services/basket";
 const { Footer } = Layout;
 
 const App = () => {
-  const { basket, addProductToBasket, removeProductFromBasket } = useBasket();
+  const basketContext = useBasket();
 
   return (
-    <BasketContext.Provider
-      value={{ basket, addProductToBasket, removeProductFromBasket }}
-    >
+    <BasketContext.Provider value={{ ...basketContext }}>
       <Router>
         <Header />
         <Switch>
