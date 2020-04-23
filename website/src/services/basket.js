@@ -44,9 +44,16 @@ const countProducts = (products = []) => {
   }, 0);
 };
 
+const sum = (products = []) => {
+  return products.reduce((acc, cur) => {
+    return acc + cur.price * cur.quantity;
+  }, 0);
+};
+
 export const useBasket = () => {
   const [basket, setBasket] = useState();
   const [count, setCount] = useState(0);
+  const [total, setTotal] = useState(0);
   const [creating, setCreating] = useState(false);
 
   const addProductToBasketLocal = async (productId, quantity) => {
@@ -78,9 +85,16 @@ export const useBasket = () => {
     }
   }, [basket]);
 
+  useEffect(() => {
+    if (basket && basket.products) {
+      setTotal(sum(basket.products));
+    }
+  }, [basket]);
+
   return {
     basket,
     itemsInBasketCount: count,
+    totalPrice: total,
     addProductToBasket: addProductToBasketLocal,
     removeProductFromBasket: removeProductFromBasketLocal,
   };
