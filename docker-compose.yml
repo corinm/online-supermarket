@@ -15,7 +15,12 @@ services:
       - CHOKIDAR_USEPOLLING=true
     stdin_open: true
     tty: true
-  # backend:
-  #   build: ./backend
-  #   ports:
-  #     - "8000:8000"
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - "./backend:/backend"
+    ports:
+      - "8000:8000"
