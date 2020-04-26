@@ -2,12 +2,15 @@ package main
 
 import (
 	"backend/controllers"
+	"backend/database"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
 
 func main() {
+	database.EnsureProductTableExists()
+
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())

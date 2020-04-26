@@ -15,6 +15,8 @@ services:
       - CHOKIDAR_USEPOLLING=true
     stdin_open: true
     tty: true
+    depends_on:
+      - backend
   backend:
     container_name: backend
     build:
@@ -24,3 +26,16 @@ services:
       - "./backend:/backend"
     ports:
       - "8000:8000"
+    environment:
+      DATABASE_URL: "postgresql://example:example@database:5432/online-supermarket"
+    depends_on:
+      - database
+  database:
+    container_name: database
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: online-supermarket
+      POSTGRES_USER: example
+      POSTGRES_PASSWORD: example
