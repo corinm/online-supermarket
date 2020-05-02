@@ -24,10 +24,10 @@ func createProductsTable(conn *pgx.Conn) pgx.Rows {
 	rows, err := conn.Query(context.Background(), `
 		CREATE TABLE IF NOT EXISTS products (
 			id serial PRIMARY KEY,
-			name varchar(100),
+			name text,
 			price numeric,
-			description varchar(100),
-			image TEXT,
+			description text,
+			image text,
 			rating numeric
 		);
 	`)
@@ -115,7 +115,8 @@ func insertAllProducts(conn *pgx.Conn) {
 	isNoProducts := isProductsTableEmpty(conn)
 
 	if isNoProducts {
-		for _, product := range products {
+		for i, product := range products {
+			fmt.Println(i, product.Name)
 			insertProduct(conn, product)
 		}
 	}
