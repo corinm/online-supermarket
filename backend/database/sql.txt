@@ -1,0 +1,15 @@
+CREATE TABLE products (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(100),
+	price numeric,
+	description VARCHAR(100),
+	image text,
+	rating numeric
+);
+
+// CREATE TABLE basket (
+// 	id SERIAL PRIMARY KEY,
+// 	products 
+// );
+
+INSERT INTO products (name, price, description, image, rating) VALUES ('Beans', 0.5, 'Some beans, in a tin', 'a', 2);
