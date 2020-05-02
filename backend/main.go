@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	database.EnsureProductTableExists()
+	database.InitialiseDatabase()
 
 	e := echo.New()
 	e.Use(middleware.Logger())
