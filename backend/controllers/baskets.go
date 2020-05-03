@@ -26,7 +26,7 @@ func GetBasketByID(c echo.Context) error {
 
 	basket := database.GetBasketByID(id)
 
-	if basket == nil {
+	if basket.ID == 0 {
 		return c.JSON(http.StatusNotFound, fmt.Sprintf("Basket with id %v not found", id))
 	}
 

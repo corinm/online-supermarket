@@ -2,6 +2,11 @@ package database
 
 import (
 	"backend/models"
+	"context"
+	"fmt"
+	"os"
+
+	"github.com/jackc/pgx/v4"
 )
 
 var (
@@ -11,21 +16,77 @@ var (
 
 // CreateBasket creates a basket in the database and returns the id
 func CreateBasket() models.Basket {
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
+	}
+	defer conn.Close(context.Background())
+
 	basket := models.Basket{}
-	basket.ID = nextID
-	nextID++
-	baskets = append(baskets, &basket)
+	err2 := conn.QueryRow(context.Background(), `
+		INSERT INTO baskets DEFAULT VALUES
+		RETURNING id;
+	`).Scan(&basket.ID)
+	if err2 != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+	}
+
+	fmt.Println("BasketID", basket.ID)
+
 	return basket
 }
 
 // GetBaskets returns all stored baskets
-func GetBaskets() []*models.Basket {
+func GetBaskets() []models.Basket {
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
+	}
+	defer conn.Close(context.Background())
+
+	rows, err2 := conn.Query(context.Background(), `
+		SELECT * FROM baskets;
+	`)
+	if err2 != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+	}
+
+	baskets := []models.Basket{}
+	for rows.Next() {
+		var basket models.Basket
+		err = rows.Scan(&basket.ID)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "rows.Scan failed: %v\n", err)
+			os.Exit(1)
+		}
+		baskets = append(baskets, basket)
+	}
+
 	return baskets
 }
 
 // GetBasketByID returns a specific basket based on its ID
-func GetBasketByID(id int) *models.Basket {
-	basket := getBasket(baskets, id)
+func GetBasketByID(id int) models.Basket {
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
+	}
+	defer conn.Close(context.Background())
+
+	var basket models.Basket
+	fmt.Println("basket", basket)
+	err2 := conn.QueryRow(context.Background(), `
+		SELECT id FROM baskets WHERE id=$1;
+	`, id).Scan(&basket.ID)
+
+	if err2 != nil {
+		fmt.Fprintf(os.Stderr, "Unable to select basket: %v\n", err2)
+	}
+	fmt.Println("basket", basket)
+
 	return basket
 }
 

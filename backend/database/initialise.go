@@ -42,8 +42,7 @@ func createProductsTable(conn *pgx.Conn) pgx.Rows {
 func createBasketsTable(conn *pgx.Conn) pgx.Rows {
 	rows, err := conn.Query(context.Background(), `
 		CREATE TABLE IF NOT EXISTS baskets (
-			id serial PRIMARY KEY,
-			products integer[]
+			id serial PRIMARY KEY
 		);
 	`)
 	if err != nil {
