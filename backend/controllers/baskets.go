@@ -36,7 +36,12 @@ func GetBasketByID(c echo.Context) error {
 // CreateBasket returns something
 func CreateBasket(c echo.Context) error {
 	fmt.Println("Creating basket")
-	basket := database.CreateBasket()
+	basket, err := database.CreateBasket()
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+
 	return c.JSON(http.StatusOK, basket)
 }
 

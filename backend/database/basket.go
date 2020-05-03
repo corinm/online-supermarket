@@ -15,11 +15,11 @@ var (
 )
 
 // CreateBasket creates a basket in the database and returns the id
-func CreateBasket() models.Basket {
+func CreateBasket() (*models.Basket, error) {
 	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-		os.Exit(1)
+		return nil, err
 	}
 	defer conn.Close(context.Background())
 
@@ -29,12 +29,13 @@ func CreateBasket() models.Basket {
 		RETURNING id;
 	`).Scan(&basket.ID)
 	if err2 != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Unable to insert into baskets: %v\n", err)
+		return nil, err2
 	}
 
 	fmt.Println("BasketID", basket.ID)
 
-	return basket
+	return &basket, nil
 }
 
 // GetBaskets returns all stored baskets

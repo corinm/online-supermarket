@@ -11,7 +11,6 @@ CREATE TABLE products (
 
 CREATE TABLE baskets (
 	id serial PRIMARY KEY,
-	products integer[]
 );
 
 CREATE TABLE basket_products (
@@ -32,3 +31,15 @@ SELECT * FROM basket_products;
 
 SELECT CASE WHEN EXISTS(SELECT 1 FROM products) THEN 0 ELSE 1 END AS isempty;
 SELECT CASE WHEN EXISTS(SELECT 1 FROM products) THEN False ELSE True END AS is_empty;
+
+SELECT
+	ARRAY_AGG(name) products
+FROM baskets
+INNER JOIN products USING (product)
+WHERE id = product
+GROUP BY basket;
+
+SELECT bp.basket, bp.product, bp.quantity, p.*
+FROM basket_products bp, products p;
+
+SELECT bp.basket, p.name AS product_name, bp.quantity FROM basket_products bp, products p WHERE product = id;
